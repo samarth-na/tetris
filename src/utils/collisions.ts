@@ -7,6 +7,8 @@ export function isValidPosition(
     offsetY: number = 0
 ): boolean {
     const { shape, x, y } = piece;
+    const BOARD_ROWS = board.length;
+    const BOARD_COLS = board[0].length;
 
     for (let row = 0; row < shape.length; row++) {
         for (let col = 0; col < shape[row].length; col++) {
@@ -16,7 +18,7 @@ export function isValidPosition(
             const newY = y + row + offsetY;
 
             // Check boundaries
-            if (newX < 0 || newX >= 10 || newY >= 20) {
+            if (newX < 0 || newX >= BOARD_COLS || newY >= BOARD_ROWS) {
                 return false;
             }
 

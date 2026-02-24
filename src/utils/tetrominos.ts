@@ -25,8 +25,8 @@ export const TETROMINOES: Record<TetrominoType, Tetromino> = {
             [1, 1, 1],
             [0, 0, 0],
         ],
-        color: "#ba68c8",
-        borderColor: "#8e44ad",
+        color: "#56b6c2",
+        borderColor: "#3d8f96",
     },
     S: {
         shape: [
@@ -97,7 +97,7 @@ export function rotateMatrix(matrix: number[][]): number[][] {
 }
 
 export function createEmptyBoard(): (string | null)[][] {
-    return Array(20)
+    return Array(30)
         .fill(null)
-        .map(() => Array(10).fill(null));
+        .map(() => Array(20).fill(null));
 }

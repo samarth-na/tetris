@@ -1,28 +1,40 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
-:root {
-    font-family: "Press Start 2P", "Courier New", monospace;
-    line-height: 1.5;
-    font-weight: 400;
+@import "tailwindcss";
 
-    color-scheme: dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #0f0f1a;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@theme {
+    --font-press-start: "Press Start 2P", "Courier New", monospace;
+    --color-onedark-bg: #1e1e1e;
+    --color-onedark-surface: #282c34;
+    --color-onedark-border: #3e4451;
+    --color-onedark-text: #abb2bf;
+    --color-onedark-blue: #61afef;
+    --color-onedark-cyan: #56b6c2;
+    --color-onedark-green: #98c379;
+    --color-onedark-yellow: #e5c07b;
+    --color-onedark-orange: #d19a66;
+    --color-onedark-red: #e06c75;
+    --color-onedark-purple: #c678dd;
+    --shadow-neon: 0 0 10px #61afef, 0 0 20px #61afef, 0 0 30px #61afef;
 }
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    min-width: 320px;
     min-height: 100vh;
+    background-color: var(--color-onedark-bg);
+    color: var(--color-onedark-text);
+    font-family: var(--font-press-start);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }

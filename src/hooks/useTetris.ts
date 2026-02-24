@@ -8,7 +8,7 @@ import {
 } from "../utils/tetrominos";
 import { isValidPosition } from "../utils/collisions";
 
-const BOARD_ROWS = 10;
+const BOARD_ROWS = 30;
 const BOARD_COLS = 20;
 
 function createPiece(type: ReturnType<typeof randomTetromino>): Piece {
@@ -171,6 +171,16 @@ export function useTetris() {
         }
 
         setBoard(newBoard);
+
+        // Check for game over - if any blocks exist in the top rows
+        const spawnZoneRows = 4; // Check top 4 rows where pieces spawn
+        for (let row = 0; row < spawnZoneRows; row++) {
+            if (newBoard[row].some((cell) => cell !== null)) {
+                setGameOver(true);
+                return;
+            }
+        }
+
         spawnPiece();
     }, [board, currentPiece, level, spawnPiece]);
 

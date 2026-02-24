@@ -1,12 +1,12 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { useTetris } from '../hooks/useTetris';
-import { useGameLoop } from '../hooks/useGameLoop';
-import { TETROMINOES } from '../utils/tetrominos';
-import './Game.css';
+import { useEffect, useRef, useCallback } from "react";
+import { useTetris } from "../hooks/useTetris";
+import { useGameLoop } from "../hooks/useGameLoop";
+import { TETROMINOES } from "../utils/tetrominos";
+import "./Game.css";
 
 const CELL_SIZE = 30;
-const BOARD_WIDTH = 10 * CELL_SIZE;
-const BOARD_HEIGHT = 20 * CELL_SIZE;
+const BOARD_WIDTH = 20 * CELL_SIZE;
+const BOARD_HEIGHT = 30 * CELL_SIZE;
 
 export function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -38,36 +38,44 @@ export function Game() {
       if (!gameStarted) return;
 
       switch (e.key) {
-        case 'ArrowLeft':
+        case "ArrowLeft":
+        case "h":
+        case "H":
           e.preventDefault();
           movePiece(-1, 0);
           break;
-        case 'ArrowRight':
+        case "ArrowRight":
+        case "l":
+        case "L":
           e.preventDefault();
           movePiece(1, 0);
           break;
-        case 'ArrowDown':
+        case "ArrowDown":
+        case "j":
+        case "J":
           e.preventDefault();
           drop();
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
+        case "k":
+        case "K":
           e.preventDefault();
           rotatePiece();
           break;
-        case ' ':
+        case " ":
           e.preventDefault();
           hardDrop();
           break;
-        case 'p':
-        case 'P':
+        case "p":
+        case "P":
           e.preventDefault();
           togglePause();
           break;
       }
     }
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [gameStarted, movePiece, rotatePiece, hardDrop, drop, togglePause]);
 
   // Game loop
@@ -79,8 +87,8 @@ export function Game() {
     const ghostCanvas = ghostCanvasRef.current;
     if (!canvas || !ghostCanvas) return;
 
-    const ctx = canvas.getContext('2d');
-    const ghostCtx = ghostCanvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
+    const ghostCtx = ghostCanvas.getContext("2d");
     if (!ctx || !ghostCtx) return;
 
     // Clear canvases
@@ -88,11 +96,11 @@ export function Game() {
     ghostCtx.clearRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
     // Draw board background
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = "#282c34";
     ctx.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
     // Draw grid
-    ctx.strokeStyle = '#2a2a4e';
+    ctx.strokeStyle = "#3e4451";
     ctx.lineWidth = 1;
     for (let x = 0; x <= BOARD_WIDTH; x += CELL_SIZE) {
       ctx.beginPath();
@@ -111,7 +119,7 @@ export function Game() {
     board.forEach((row, y) => {
       row.forEach((cell, x) => {
         if (cell) {
-          drawBlock(ctx, x, y, cell, '#00000033');
+          drawBlock(ctx, x, y, cell, "#00000033");
         }
       });
     });
@@ -124,7 +132,13 @@ export function Game() {
         ghostPiece.shape.forEach((row, dy) => {
           row.forEach((value, dx) => {
             if (value) {
-              drawBlock(ghostCtx, ghostPiece.x + dx, ghostPiece.y + dy, ghostPiece.color, '#00000050');
+              drawBlock(
+                ghostCtx,
+                ghostPiece.x + dx,
+                ghostPiece.y + dy,
+                ghostPiece.color,
+                "#00000050"
+              );
             }
           });
         });
@@ -137,7 +151,13 @@ export function Game() {
       currentPiece.shape.forEach((row, dy) => {
         row.forEach((value, dx) => {
           if (value && currentPiece.y + dy >= 0) {
-            drawBlock(ctx, currentPiece.x + dx, currentPiece.y + dy, currentPiece.color, currentPiece.borderColor);
+            drawBlock(
+              ctx,
+              currentPiece.x + dx,
+              currentPiece.y + dy,
+              currentPiece.color,
+              currentPiece.borderColor
+            );
           }
         });
       });
@@ -167,13 +187,15 @@ export function Game() {
             <h3 className="panel-title">CONTROLS</h3>
             <div className="controls-list">
               <div className="control-item">
-                <kbd>←</kbd><kbd>→</kbd> Move
+                <kbd>←</kbd>
+                <kbd>→</kbd> / <kbd>H</kbd>
+                <kbd>L</kbd> Move
               </div>
               <div className="control-item">
-                <kbd>↑</kbd> Rotate
+                <kbd>↑</kbd> / <kbd>K</kbd> Rotate
               </div>
               <div className="control-item">
-                <kbd>↓</kbd> Soft Drop
+                <kbd>↓</kbd> / <kbd>J</kbd> Soft Drop
               </div>
               <div className="control-item">
                 <kbd>Space</kbd> Hard Drop
@@ -274,7 +296,7 @@ function drawBlock(
   );
 
   // Highlight (top-left)
-  ctx.fillStyle = '#ffffff60';
+  ctx.fillStyle = "#ffffff60";
   ctx.fillRect(
     x * size + padding + 2,
     y * size + padding + 2,
@@ -283,7 +305,7 @@ function drawBlock(
   );
 
   // Shadow (bottom-right)
-  ctx.fillStyle = '#00000040';
+  ctx.fillStyle = "#00000040";
   ctx.fillRect(
     x * size + padding + 2,
     y * size + padding + (size - padding * 2) / 2,
@@ -302,7 +324,11 @@ function drawBlock(
   );
 }
 
-function NextPiecePreview({ type }: { type: ReturnType<typeof import('../utils/tetrominos').randomTetromino> }) {
+function NextPiecePreview({
+  type,
+}: {
+  type: ReturnType<typeof import("../utils/tetrominos").randomTetromino>;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tetromino = TETROMINOES[type];
 
@@ -310,11 +336,11 @@ function NextPiecePreview({ type }: { type: ReturnType<typeof import('../utils/t
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = "#282c34";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const blockSize = 25;
@@ -324,7 +350,16 @@ function NextPiecePreview({ type }: { type: ReturnType<typeof import('../utils/t
     tetromino.shape.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value) {
-          drawBlockPreview(ctx, x, y, tetromino.color, tetromino.borderColor, blockSize, offsetX, offsetY);
+          drawBlockPreview(
+            ctx,
+            x,
+            y,
+            tetromino.color,
+            tetromino.borderColor,
+            blockSize,
+            offsetX,
+            offsetY
+          );
         }
       });
     });
@@ -360,7 +395,7 @@ function drawBlockPreview(
     size - padding * 2
   );
 
-  ctx.fillStyle = '#ffffff60';
+  ctx.fillStyle = "#ffffff60";
   ctx.fillRect(
     offsetX + x * size + padding + 2,
     offsetY + y * size + padding + 2,

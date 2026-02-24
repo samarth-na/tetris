@@ -1,0 +1,2 @@
+# primary
+- use bun only
